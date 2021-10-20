@@ -1,5 +1,6 @@
 import sys
 import argparse
+import pathlib
 
 from dogsearch.model import Model
 
@@ -15,5 +16,8 @@ if m is None:
     sys.stderr.write("Uknown model type \"{}\"\n".format(args.type))
     sys.exit(1)
 
-result = m.process(None, None)
-print(result)
+with open(args.image, "rb") as f:
+    data = f.read()
+    ext = pathlib.Path(args.image).suffix
+    result = m.process(data, ext)
+    print(result)
