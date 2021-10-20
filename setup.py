@@ -8,6 +8,6 @@ setup(
     description="Dog Search (model)",
     author="Vadim Alimguzhin",
     author_email="vadim.alimguzhin@gmail.com",
-    packages=["dogsearch.model", "dogsearch.model.random"],
+    packages=["dogsearch.model", "dogsearch.model.random", "dogsearch.model.real"],
     install_requires=[],
 )
