@@ -1,6 +1,7 @@
-from dogsearch.model import Model
-
+import time
 from random import random, randint
+
+from dogsearch.model import Model
 
 
 class RandomModel(Model):
@@ -22,4 +23,5 @@ class RandomModel(Model):
             res["is_the_owner_there"] = 2 # undefined
             res["color"] = 3 # undefined
             res["tail"] = 3 # undefined
+        time.sleep(randint(1, 10))
         return res
