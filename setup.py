@@ -9,5 +9,10 @@ setup(
     author="Vadim Alimguzhin",
     author_email="vadim.alimguzhin@gmail.com",
     packages=["dogsearch.model", "dogsearch.model.random", "dogsearch.model.real"],
-    install_requires=[],
+    install_requires=["imageai==2.1.6"
+                    ,"numpy"
+                    ,"pandas"
+                    ,"scikit-learn"
+                    ,"tesseract"
+                    ,"pytesseract"]
 )
