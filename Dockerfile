@@ -1,24 +1,38 @@
-FROM debian:11.1
+FROM debian:10.11
 
 RUN apt-get update && apt-get install -y \
-  python3 \
-  python3-pip \
-  libgl1-mesa-glx \
-  tesseract-ocr \
-  && rm -rf /var/apt/lists/*
+    python3 \
+    python3-venv \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    tesseract-ocr \
+    tesseract-ocr-rus \
+    wget \
+    && rm -rf /var/apt/lists/*
 
-ENV DATA /code/data
+ENV VIRTUAL_ENV /venv
+RUN python3 -m venv $VIRTUAL_ENV
 
-COPY . /code
+ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 
-WORKDIR /code
+RUN pip install --upgrade pip wheel
 
-RUN pip3 install .
+ENV TF_CPP_MIN_LOG_LEVEL=3
+
+COPY code /code
+
+RUN pip install /code && rm -rf /code
+
+COPY data /data
+
+ENV DATA /data
+
+COPY prepare.sh /
+
+RUN /prepare.sh
 
 RUN mkdir /work
 
 WORKDIR /work
 
-
-ENTRYPOINT ["python3", "-m", "dogsearch.model"]
-# CMD ["python3", "-m", "dogsearch.model"]
+ENTRYPOINT ["python", "-m", "dogsearch.model"]
