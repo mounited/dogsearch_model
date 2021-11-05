@@ -130,10 +130,12 @@ class RealModel(Model):
 
         # is_animal_there, is_it_a_dog, is_the_owner_there aggregate
         is_animal_there = np.max([is_animal_there_retina, is_animal_there_yolo])
-        is_it_a_dog = np.max([is_it_a_dog_retina, is_it_a_dog_yolo])
-        is_the_owner_there = np.max(
-            [is_the_owner_there_retina, is_the_owner_there_yolo]
-        )
+        if is_animal_there > 0:
+            is_it_a_dog = np.max([is_it_a_dog_retina, is_it_a_dog_yolo])
+            if is_it_a_dog > 0:
+                is_the_owner_there = np.max(
+                    [is_the_owner_there_retina, is_the_owner_there_yolo]
+                )
 
         if len(objects_data) > 0 and is_it_a_dog > 0:
             # crop images
