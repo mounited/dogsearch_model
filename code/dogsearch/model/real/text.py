@@ -1,7 +1,6 @@
 import pytesseract
 import cv2
 
-
 # Text detection
 def filter_image(image):
     # grayscale image
@@ -25,6 +24,14 @@ def predict(image):
             cam_id = ""
         addr = ocr_lines[1] + " " + ocr_lines[2]
         addr = addr.lower()
+
+        def clean_cam_line(line):
+            line = line.replace(",", " ")
+            line = line.replace("  ", " ")
+            return line if len(line) > 0 else " "
+        cam_id = clean_cam_line(cam_id)
+        addr = clean_cam_line(addr)
+
         return [cam_id, addr]
     else:
-        return ["", ""]
+        return [" ", " "]
