@@ -12,7 +12,7 @@ logging.getLogger('tensorflow').setLevel(logging.ERROR)
 
 from dogsearch.model.real.color import predict as predict_color
 from dogsearch.model.real.tail import TailModel
-from dogsearch.model.real.text import predict as predict_text
+from dogsearch.model.real.text import TextModel
 
 
 class RealModel(Model):
@@ -38,6 +38,7 @@ class RealModel(Model):
         self.detector_yolo.loadModel()
 
         self.tail_model = TailModel(base_dir, self.img_size)
+        self.text_model = TextModel(base_dir)
 
     def process(self, data, ext):
         with io.BytesIO(data) as f:
@@ -56,6 +57,7 @@ class RealModel(Model):
         tail = 0
         address = ""
         cam_id = ""
+        breed = ""
 
         # detect objects
         # RetinaNet
@@ -147,9 +149,10 @@ class RealModel(Model):
                 objects.append(cropped_image)
 
             color = predict_color(objects)
-            tail = 1 if self.tail_model.predict(objects) == "short" else 2
+            breed, tail = self.tail_model.predict(objects)
+            tail = 1 if tail == "short" else 2
 
-        cam_id, address = predict_text(image)
+        cam_id, address = self.text_model.predict(image)
 
         res = {
             "is_animal_there": is_animal_there,
@@ -159,5 +162,6 @@ class RealModel(Model):
             "tail": tail,
             "address": address,
             "cam_id": cam_id,
+            "breed": breed
         }
         return res

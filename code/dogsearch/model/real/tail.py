@@ -109,4 +109,4 @@ class TailModel:
 
     def predict(self, objects):
         breed = self.predict_breed(objects)
-        return self.tails_dict.loc[breed, "tail"]
+        return [breed, self.tails_dict.loc[breed, "tail"]]

@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-rus \
     wget \
+    build-essential \
+    python3-dev \
     && rm -rf /var/apt/lists/*
 
 ENV VIRTUAL_ENV /venv
